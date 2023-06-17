@@ -119,10 +119,10 @@ func (c *APIClient) httpDelete(ctx context.Context, apiSpecificPath string) erro
 }
 
 func (c *APIClient) newRequest(ctx context.Context, httpMethod, apiSpecificPath string, input any) (*http.Request, error) {
-	url := c.baseURL
+	url := *c.baseURL
 	url.Path = path.Join(url.Path, apiSpecificPath)
 
-	req, err := internal.NewRequest(ctx, httpMethod, url, input)
+	req, err := internal.NewRequest(ctx, httpMethod, &url, input)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create a new request")
 	}
