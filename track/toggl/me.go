@@ -21,7 +21,7 @@ type Me struct {
 	ImageURL           *string    `json:"image_url,omitempty"`
 	CreatedAt          *time.Time `json:"created_at,omitempty"`
 	UpdatedAt          *time.Time `json:"updated_at,omitempty"`
-	OpenIDEmail        *bool      `json:"openid_email,omitempty"`
+	OpenIDEmail        *string    `json:"openid_email,omitempty"`
 	OpenIDEnabled      *bool      `json:"openid_enabled,omitempty"`
 	CountryID          *int       `json:"country_id,omitempty"`
 	At                 *time.Time `json:"at,omitempty"`
@@ -68,6 +68,26 @@ func (c *APIClient) GetMyOrganizations(ctx context.Context) ([]*Organization, er
 		return nil, errors.Wrap(err, "failed to get my organizations")
 	}
 	return organizations, nil
+}
+
+// GetMyWorkspaces gets all organizations a given user is part of.
+func (c *APIClient) GetMyWorkspaces(ctx context.Context) ([]*Workspace, error) {
+	var workspaces []*Workspace
+	apiSpecificPath := path.Join(mePath, "workspaces")
+	if err := c.httpGet(ctx, apiSpecificPath, nil, &workspaces); err != nil {
+		return nil, errors.Wrap(err, "failed to get my workspaces")
+	}
+	return workspaces, nil
+}
+
+// GetMyTasks gets all tasks of a given user.
+func (c *APIClient) GetMyTasks(ctx context.Context) ([]*Task, error) {
+	var tasks []*Task
+	apiSpecificPath := path.Join(mePath, "tasks")
+	if err := c.httpGet(ctx, apiSpecificPath, nil, &tasks); err != nil {
+		return nil, errors.Wrap(err, "failed to get my tasks")
+	}
+	return tasks, nil
 }
 
 // GetMyProjectsQuery represents the additional parameters of GetMyProjects.
