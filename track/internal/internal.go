@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -20,7 +21,7 @@ const (
 func NewRequest(ctx context.Context, httpMethod string, url *url.URL, input any) (*http.Request, error) {
 	requestBody := io.Reader(nil)
 	switch httpMethod {
-	case http.MethodPost, http.MethodPut:
+	case http.MethodPost, http.MethodPut, http.MethodPatch:
 		b, err := json.Marshal(input)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to marshal input")
@@ -56,7 +57,7 @@ func Do(client *http.Client, req *http.Request, respBody any) error {
 	}
 
 	switch req.Method {
-	case http.MethodGet, http.MethodPost, http.MethodPut:
+	case http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch:
 		err = decodeJSON(resp, respBody)
 		if err != nil {
 			return errors.Wrap(err, "failed to decode response body")

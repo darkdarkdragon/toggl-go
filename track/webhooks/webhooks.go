@@ -81,6 +81,22 @@ func (c *APIClient) httpGet(ctx context.Context, apiSpecificPath string, query, 
 	return c.do(req, respBody)
 }
 
+func (c *APIClient) httpPost(ctx context.Context, apiSpecificPath string, reqBody, respBody any) error {
+	req, err := c.newRequest(ctx, http.MethodPost, apiSpecificPath, reqBody)
+	if err != nil {
+		return errors.Wrap(err, "failed to create a new POST request")
+	}
+	return c.do(req, respBody)
+}
+
+func (c *APIClient) httpPatch(ctx context.Context, apiSpecificPath string, reqBody, respBody any) error {
+	req, err := c.newRequest(ctx, http.MethodPatch, apiSpecificPath, reqBody)
+	if err != nil {
+		return errors.Wrap(err, "failed to create a new PATCH request")
+	}
+	return c.do(req, respBody)
+}
+
 func (c *APIClient) newRequest(ctx context.Context, httpMethod, apiSpecificPath string, input any) (*http.Request, error) {
 	url := c.baseURL
 	url.Path = path.Join(url.Path, apiSpecificPath)
