@@ -89,6 +89,14 @@ func (c *APIClient) httpPost(ctx context.Context, apiSpecificPath string, reqBod
 	return c.do(req, respBody)
 }
 
+func (c *APIClient) httpDelete(ctx context.Context, apiSpecificPath string, reqBody, respBody any) error {
+	req, err := c.newRequest(ctx, http.MethodDelete, apiSpecificPath, reqBody)
+	if err != nil {
+		return errors.Wrap(err, "failed to create a new DELETE request")
+	}
+	return c.do(req, respBody)
+}
+
 func (c *APIClient) httpPatch(ctx context.Context, apiSpecificPath string, reqBody, respBody any) error {
 	req, err := c.newRequest(ctx, http.MethodPatch, apiSpecificPath, reqBody)
 	if err != nil {

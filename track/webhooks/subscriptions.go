@@ -72,3 +72,12 @@ func (c *APIClient) SetEnabled(ctx context.Context, workspaceID int, subsID int,
 	}
 	return sub, nil
 }
+
+func (c *APIClient) DeleteSubscription(ctx context.Context, workspaceID int, subsID int) (*Subscription, error) {
+	var sub = &Subscription{}
+	apiSpecificPath := path.Join(webhooksPath, "subscriptions", strconv.Itoa(workspaceID), strconv.Itoa(subsID))
+	if err := c.httpDelete(ctx, apiSpecificPath, nil, sub); err != nil {
+		return nil, errors.Wrap(err, "failed to delete subscription")
+	}
+	return sub, nil
+}
